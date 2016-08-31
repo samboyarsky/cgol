@@ -63,16 +63,36 @@ class Board{
     }
 }
 
+function clickCell(who){
+    //console.log(who.data.x)
+    //console.log(who.data.elem);
+    console.log(this.getAttribute('x'))
+    if(b.grid[who.data.x][who.data.y]){
+        b.grid[who.data.x][who.data.y] = false;
+        who.data.elem.removeClass('live');
+    }
+    else{
+        b.grid[who.data.x][who.data.y] = true;
+        who.data.elem.addClass('live');
+    }
+
+}
 
 function buildTable(){
-    var $table = $('#table');
+    var $table = $('#game_of_life_grid');
     $table.empty();
     for(var x = 0; x < b.width; x++){
         var $tr = $('<tr>');
         $table.append($tr)
+        // $tr.appendTo($table)
         for(var y = 0; y < b.height; y++){
 
             var $td = $('<td>');
+            // $td.attr("x", x);
+            // $td.attr("y", y);
+            // $td.attr("id", 'cell' + x + '_' + y);
+            $td.click({ x:x, y:y, elem:$td }, clickCell);
+            // $td.click({}, clickCell);
             if(b.grid[x][y]) { $td.addClass('live'); }
             $table.append($td)
         }
@@ -81,9 +101,8 @@ function buildTable(){
 
 function doUpdate(){
     b.update();
-    buildTable();
+    //buildTable();
 }
-b = new Board();
 
 function toad(){
     b.setLive(3,3);
@@ -99,7 +118,8 @@ function blinker(){
     b.setLive(4,5);
     b.setLive(4,6);
 }
+
+b = new Board(50,50);
 //blinker();
-toad();
+//toad();
 buildTable();
-setInterval(doUpdate, 500)
