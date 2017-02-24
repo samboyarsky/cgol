@@ -94,15 +94,24 @@ function doUpdate(){
     b.update()
 }
 
-b = new Board(50, 50)
-buildTable()
+var clock = null
+var b
+function newGame(){
 
-var interval_id = null
-$('#goButton').click(function (){
-    if(!interval_id){
-        interval_id = setInterval(doUpdate, 500)
-    }
-})
-$('#stopButton').click(function (){
-    interval_id = clearTimeout(interval_id)
-})
+    b = new Board($('#rows').val(), $('#cols').val())
+    buildTable()
+
+
+    $('#goButton').click(function (){
+        if(!clock){
+            clock = setInterval(doUpdate, $('#clockSpeed').val())
+        }
+    })
+    $('#stopButton').click(function (){
+        clock = clearTimeout(clock)
+    })
+    $('#setup').css('display', 'none')
+    $('#game').css('display', 'block')
+}
+
+$('#startButton').click(newGame)
