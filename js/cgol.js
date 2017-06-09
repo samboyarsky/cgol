@@ -61,18 +61,26 @@ class Board{
             console.log(line + '\n')
         }
     }
+
+    randomSeed(density){
+        for(var x = 0; x < this.width; x++){
+            for(var y = 0; y < this.height; y++){
+                if(Math.random() < density){
+                    this.grid[x][y] = true
+                    $('#cell_' + x + '_' + y).addClass('live')
+                }
+            }
+        }
+    }
+
 }
 
 function clickCell(){
-    var x = this.getAttribute('x')
-    var y = this.getAttribute('y')
-    if(b.grid[x][y]){
-         $(this).removeClass('live')
-    }
-    else{
-         $(this).addClass('live')
-    }
-    b.grid[x][y] = !b.grid[x][y]
+    let x = this.getAttribute('x')
+    let y = this.getAttribute('y')
+
+    $(this).toggleClass('live')
+    b.grid[x][y] = !b.grid[x][y] 
 }
 
 function buildTable(){
@@ -88,6 +96,9 @@ function buildTable(){
         }
         $table.append($tr)
     }
+
+
+
 }
 
 function doUpdate(){
@@ -110,8 +121,11 @@ function newGame(){
     $('#stopButton').click(function (){
         clock = clearTimeout(clock)
     })
+    $("#randomizeButton").click(function(){ b.randomSeed($("#density")) })
     $('#setup').css('display', 'none')
     $('#game').css('display', 'block')
 }
 
 $('#startButton').click(newGame)
+
+
